@@ -13,7 +13,11 @@ import javax.sql.DataSource
 import kotlin.test.assertEquals
 
 @SpringBootTest
-class DataSourceTests {
+class DataSourceSwitchTests {
+    private val populator = ResourceDatabasePopulator().apply {
+        addScripts(ClassPathResource("init.sql"))
+    }
+
     @Autowired
     private lateinit var dataSource: DataSource
 
@@ -45,11 +49,6 @@ class DataSourceTests {
 
     @Test
     fun dataManipulate() {
-        // 初始化 H2 数据库
-        val populator = ResourceDatabasePopulator().apply {
-            addScripts(ClassPathResource("init.sql"))
-        }
-
         (dataSource as AbstractRoutingDataSource).resolvedDataSources.values
             .forEach { populator.execute(it) }
 
