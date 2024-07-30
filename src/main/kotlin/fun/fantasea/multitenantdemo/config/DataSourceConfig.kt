@@ -10,6 +10,7 @@ import javax.sql.DataSource
 class DataSourceConfig {
     @Bean
     fun dataSource(): DataSource {
+        // 定义数据源
         val h2DataSource1 = DriverManagerDataSource().apply {
             setDriverClassName("org.h2.Driver")
             username = "sa"
@@ -24,7 +25,8 @@ class DataSourceConfig {
             url = "jdbc:h2:mem:testdb2;DB_CLOSE_DELAY=-1"
         }
 
-        return TenantRoutingDataSource().apply {
+        // 配置标识符与数据源的映射关系
+        val tenantRoutingDataSource = TenantRoutingDataSource().apply {
             val dataSources = mapOf(
                 "tenant1" to h2DataSource1,
                 "tenant2" to h2DataSource2
@@ -32,5 +34,7 @@ class DataSourceConfig {
             setTargetDataSources(dataSources)
             setDefaultTargetDataSource(h2DataSource1)
         }
+
+        return tenantRoutingDataSource
     }
 }

@@ -45,13 +45,13 @@ class DataSourceTests {
 
     @Test
     fun dataManipulate() {
-        val populator = ResourceDatabasePopulator()
-        populator.addScripts(ClassPathResource("init.sql"))
-//        populator.setSeparator("@@")
-        (dataSource as AbstractRoutingDataSource).resolvedDataSources.keys
-            .forEach {
-                populator.execute(dataSource)
-            }
+        // 初始化 H2 数据库
+        val populator = ResourceDatabasePopulator().apply {
+            addScripts(ClassPathResource("init.sql"))
+        }
+
+        (dataSource as AbstractRoutingDataSource).resolvedDataSources.values
+            .forEach { populator.execute(it) }
 
         withTenantContext("tenant1") {
             populator.execute(dataSource)
