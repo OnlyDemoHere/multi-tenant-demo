@@ -14,14 +14,14 @@ class DataSourceConfig {
             setDriverClassName("org.h2.Driver")
             username = "sa"
             password = "password"
-            url = "jdbc:h2:mem:testdb1"
+            url = "jdbc:h2:mem:testdb1;DB_CLOSE_DELAY=-1"
         }
 
         val h2DataSource2 = DriverManagerDataSource().apply {
             setDriverClassName("org.h2.Driver")
             username = "sa"
             password = "password"
-            url = "jdbc:h2:mem:testdb2"
+            url = "jdbc:h2:mem:testdb2;DB_CLOSE_DELAY=-1"
         }
 
         return TenantRoutingDataSource().apply {
